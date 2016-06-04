@@ -22,11 +22,23 @@ gem 'puma', '~> 3.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # BDD for Ruby
+  gem 'rspec', '~> 3.5.0.beta3'
+  gem 'rspec-core', '~> 3.5.0.beta3'
+  gem 'rspec-expectations', '~> 3.5.0.beta3'
+  gem 'rspec-mocks', '~> 3.5.0.beta3'
+  gem 'rspec-support', '~> 3.5.0.beta3'
+  # rspec-rails is a testing framework for Rails 3.x and 4.x.
+  gem 'rspec-rails', '~> 3.5.0.beta3'
 end
 
 group :development do
   # Guard is a command line tool to easily handle events on file system modifications.
   gem 'guard', '~> 2.14'
+  # Guard::RSpec automatically run your specs (much like autotest).
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.2'
+  # Guard::Rubocop automatically checks Ruby code style with RuboCop when files are modified.
+  gem 'guard-rubocop', '~> 1.2'
 
   gem 'listen', '~> 3.0.5'
   # Automatic Ruby code style checking tool. Aims to enforce the community-driven Ruby Style Guide.
