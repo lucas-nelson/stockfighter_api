@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Order.create!  account: 'GAS68058614',
+               direction: 'buy',
+               order_type: 'limit',
+               price: 25_000,
+               quantity: 100,
+               symbol: 'CDSC',
+               venue: 'YEHKEX'
