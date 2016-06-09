@@ -11,7 +11,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    if (order = Order.create(order_params))
+    order = Order.new(order_params)
+    if order.save
       render json: order, status: :created, location: order
     else
       render json: order.errors, status: :unprocessable_entity
