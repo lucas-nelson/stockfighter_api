@@ -15,7 +15,11 @@ class OrdersController < ApplicationController
     if order.save
       render json: order, status: :created, location: order
     else
-      render json: order.errors, status: :unprocessable_entity
+      # https://github.com/rails-api/active_model_serializers/blob/master/docs/jsonapi/errors.md
+      render json: order,
+             status: :unprocessable_entity,
+             adapter: :json_api,
+             serializer: ActiveModel::Serializer::ErrorSerializer
     end
   end
 

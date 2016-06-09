@@ -59,6 +59,34 @@ RSpec.describe 'Orders', type: :request do
       expect(attributes.fetch('symbol')).to eq 'ZYXW'
       expect(attributes.fetch('venue')).to eq 'VUTS'
     end
+
+    it 'fails to create the specific order with missing data' do
+      order = { data: { type: 'orders', attributes: { foo: 'bar' } } }
+
+      expect do
+        post orders_url, params: order.to_json, headers: { 'Content-Type': 'application/vnd.api+json' }
+      end.not_to change(Order, :count)
+
+      body = JSON.parse(response.body)
+      errors = body.fetch('errors')
+      errors = errors.sort_by { |error| [error.dig('source', 'pointer'), error['detail']] }
+
+      expected = [
+        { 'source' => { 'pointer' => '/data/attributes/account' },    'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/direction' },  'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/direction' },  'detail' => 'is not included in the list' },
+        { 'source' => { 'pointer' => '/data/attributes/order-type' }, 'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/order-type' }, 'detail' => 'is not included in the list' },
+        { 'source' => { 'pointer' => '/data/attributes/price' },      'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/price' },      'detail' => 'is not a number' },
+        { 'source' => { 'pointer' => '/data/attributes/quantity' },   'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/quantity' },   'detail' => 'is not a number' },
+        { 'source' => { 'pointer' => '/data/attributes/symbol' },     'detail' => "can't be blank" },
+        { 'source' => { 'pointer' => '/data/attributes/venue' },      'detail' => "can't be blank" }
+      ]
+
+      expect(errors).to eq(expected)
+    end
   end
 
   describe 'PUT /orders/:id' do
